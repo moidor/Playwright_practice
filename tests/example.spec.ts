@@ -115,7 +115,7 @@ test('Search a YouTube video from a read text file', async ({ page }) => {
   const randomIndex = Math.floor(Math.random() * elementsList.length);
   const randomObject: Locator = firstFiveResults[elementsList[randomIndex]];
   const randomObjectName = await randomObject.innerText();
-  console.log(randomObjectName);
+  console.log(`Name of the selected video: ${randomObjectName}`);
   await expect(randomObject).not.toBeEmpty();
   await randomObject.click();
   
