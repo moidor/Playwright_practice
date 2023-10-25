@@ -21,6 +21,8 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  // Config name is visible in the report and during test execution, unless overridden by testProject.name.
+  name: 'Playwright practice Cham',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -28,6 +30,12 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
+    actionTimeout: 0,
+    // Emulates `'prefers-colors-scheme'` media feature.
+    colorScheme: 'dark',
+    // Emulates the user timezone.
+    // timezoneId: 'Pacific/Honolulu',
   },
 
   /* Configure projects for major browsers */

@@ -1,5 +1,6 @@
-import { test, expect, Locator } from '@playwright/test';
+import { test, expect, Locator, Browser } from '@playwright/test';
 import * as fs from 'fs';
+
 
 test('has title', async ({ page }) => {
   await page.goto('https://playwright.dev/');
@@ -51,73 +52,30 @@ test('Google homepage', async ({ page }) => {
   console.log('Heading: ' + await page.getByRole('heading').innerText());
 });
 
+test.describe('miscellaneous', () => {
+  test.use({
+    locale: '{ fr-FR }'
+  });
 
-test('jeuxvideo.com homepage', async ({ page }) => {
-  await page.goto('https://www.jeuxvideo.com/tous-les-jeux/');
-  await page.getByRole('button', { checked: true }).click();
-  // await page.frameLocator('div').getByText('Tout refuser').click();
-  // await page.getByText('Tout refuser').nth(1).click();
+  test('browser argument @fast', async ({ page, browser }) => {   
+    await page.goto(`https://www.youtube.com/results?search_query=whale shark`);
+    // Cookies rejection
+    await page.getByRole('button', { name: 'Refuser' }).click();
+    // await BrowserContext.setGeolocation({ latitude: 59.95, longitude: 30.31667 });
+    console.log(browser.browserType().name());
+  });
 
-  const jvClass = await page.locator('.linkLogo__2DdhES').getAttribute('class');
-  console.log(jvClass);
-});
-
-// Test on a YouTube video
-test('YouTube video', async ({ page }) => {
-  await page.goto('https://www.youtube.com/watch?v=2yO-pCa1MAY&ab_channel=1MinuteAnimals');
-  // Cookies rejection
-  await page.getByRole('button', { name: 'Reject' }).click();
-  // Pause the video
-  await page.getByRole('button', { name: 'Pause' }).click();
-  // Change the video quality
-  await page.getByRole('button', { name: 'Settings' }).nth(1).click();
-  await page.getByText('Quality').nth(0).click();
-  await page.getByText('720p').click();
-  // Mute the video
-  await page.press('button', 'm');
-  // Deactivate the Autoplay
-  await page.getByRole('button', { name: 'Autoplay' }).click();
-  // Put the frame in full screen
-  const fullScreenButton = await page.getByRole('button', { name: 'Full screen' });
-  expect(fullScreenButton).toBeVisible();
-  fullScreenButton.press('f');
-  // await page.waitForTimeout(3000)
-  // Re-launch the video play
-  await page.keyboard.down('k');
-  // await page.press('button', 'k');
-});
-
-// Search a YouTube video from a read text file
-// const value = await page.getByRole('textbox').inputValue();
-test('Search a YouTube video from a read text file', async ({ page }) => {
-  // Reading data from the text file
-  const data_file = fs.readFileSync('misc/data.txt', 'utf-8');
-  const wordList = data_file.split('\r\n');
-  const search_value = wordList[0];
-  expect(search_value.length).not.toBeNull();
-  console.log(`Read value from the text file: \'${search_value}\'`);
-  // Accessing YouTube homepage
-  await page.goto(`https://www.youtube.com/results?search_query=${search_value}`);
-  // Cookies rejection
-  await page.getByRole('button', { name: 'Reject' }).click();
-  await expect(page.locator('#dialog')).not.toBeVisible();
-  // await expect(page.locator('#dialog')).toBeHidden();
-
-  // Looping over the (five first ?) results to get a random element
-  // const results = await page.locator('#dismissible').all();
-  // Display in the console each video's title
-  const firstFiveResultsText = (await page.locator('#items #dismissible #video-title').allInnerTexts()).slice(0,5);
-  console.log(firstFiveResultsText);
-
-  // Select a random value in the list
-  const firstFiveResults = (await page.locator('#items #dismissible #video-title').all()).slice(0,5);
-  const elementsList = Object.keys(firstFiveResults);
-  const randomIndex = Math.floor(Math.random() * elementsList.length);
-  const randomObject: Locator = firstFiveResults[elementsList[randomIndex]];
-  const randomObjectName = await randomObject.innerText();
-  console.log(`Name of the selected video: ${randomObjectName}`);
-  await expect(randomObject).not.toBeEmpty();
-  await randomObject.click();
+  test('skip this test @skip', async ({ browserName }) => {
+    test.skip(browserName === 'chromium', 'Still working on it');
+  });
   
-  // const allTextList = Array.from(allText);
+  // custom annotation (to be understood yet...)
+  test('user profile', async ({ page }) => {
+    test.info().annotations.push({
+      type: 'issue',
+      description: 'https://github.com/microsoft/playwright/issues/<some-issue>',
+    });
+    // ...
+  });
+
 });
