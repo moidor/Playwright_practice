@@ -1,5 +1,7 @@
-import { test, expect, Locator, Browser } from '@playwright/test';
+import { test, expect, Locator, Browser, devices, chromium } from '@playwright/test';
 import * as fs from 'fs';
+import * as stream from 'node:stream';
+import * as zip from 'zlib';
 
 
 test('has title', async ({ page }) => {
@@ -57,14 +59,14 @@ test.describe('miscellaneous', () => {
     locale: '{ fr-FR }'
   });
 
-  test('browser argument @fast', async ({ page, browser }) => {   
+  test('browser argument @fast', async ({ page, browser }) => {
     await page.goto(`https://www.youtube.com/results?search_query=whale shark`);
     // Cookies rejection
-    await page.getByRole('button', { name: 'Refuser' }).click();
-    // await BrowserContext.setGeolocation({ latitude: 59.95, longitude: 30.31667 });
-    console.log(browser.browserType().name());
+    // await page.getByRole('button', { name: 'Refuser' }).click();
+    // console.log(browser.browserType().name());
   });
 
+  // To skip a test
   test('skip this test @skip', async ({ browserName }) => {
     test.skip(browserName === 'chromium', 'Still working on it');
   });
@@ -74,8 +76,7 @@ test.describe('miscellaneous', () => {
     test.info().annotations.push({
       type: 'issue',
       description: 'https://github.com/microsoft/playwright/issues/<some-issue>',
-    });
-    // ...
   });
+  });
+})
 
-});

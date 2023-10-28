@@ -34,9 +34,13 @@ test.describe('geolocation', () => {
     test.slow();
     await page.goto('https://www.google.fr/maps/');
     await page.getByRole('button', { name: 'Refuser' }).click();
-    // await page.waitForTimeout(20000);
-    await page.getByLabel('Itinéraire', { exact: true }).click();
-    await page.getByRole('gridcell', { name: 'Votre position Votre position' }).click();
+    // await page.waitForTimeout(10000);
+    // const itinerary = await page.getByLabel('Itinéraire', { exact: true });
+    const itinerary = await page.locator('#hArJGc');
+    await itinerary.waitFor({state: 'visible', timeout: 10000});
+    await itinerary.click();
+    await page.getByRole('gridcell', { name: 'Votre position' }).click();
+    // await page.getByLabel('Afficher votre position').click();
     await page.getByPlaceholder('Choisissez une destination…').fill('Lille');
     await page.keyboard.press('Enter');
   });
