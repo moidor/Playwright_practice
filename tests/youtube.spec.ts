@@ -3,23 +3,22 @@ import * as fs from 'fs';
 
 // Test on a YouTube video
 test('YouTube video', async ({ page }) => {
-await page.goto('https://www.youtube.com/watch?v=2yO-pCa1MAY&ab_channel=1MinuteAnimals');
+  test.slow();
+    await page.goto('https://www.youtube.com/watch?v=2yO-pCa1MAY&ab_channel=1MinuteAnimals');
     // Cookies rejection
     await page.getByRole('button', { name: 'Reject' }).click();
     // Pause the video
     await page.getByRole('button', { name: 'Pause' }).click();
     // Change the video quality
-    await page.getByRole('button', { name: 'Settings' }).nth(1).click();
-    await page.getByText('Quality').nth(0).click();
+    await page.getByLabel('YouTube Video Player').getByLabel('Settings').click();
+    await page.getByRole('menuitem', { name: 'Quality' }).locator('div').first().click();
     await page.getByText('720p').click();
     // Mute the video
     await page.press('button', 'm');
     // Deactivate the Autoplay
     await page.getByRole('button', { name: 'Autoplay' }).click();
     // Put the frame in full screen
-    const fullScreenButton = await page.getByRole('button', { name: 'Full screen' });
-    expect(fullScreenButton).toBeVisible();
-    fullScreenButton.press('f');
+    await page.keyboard.press('f');
     // await page.waitForTimeout(3000)
     // Re-launch the video play
     await page.keyboard.down('k');
@@ -38,7 +37,7 @@ test('Search a YouTube video from a read text file', async ({ page }) => {
     expect(search_value.length).not.toBeNull();
     console.log(`Read value from the text file: \'${search_value}\'`);
     // Accessing YouTube homepage
-    await page.goto(`https://www.youtube.com/results?search_query=${search_value}`);  
+    await page.goto(`https://www.youtube.com/results?search_query=${search_value}`);
     // Cookies rejection
     await page.getByRole('button', { name: 'Reject' }).click();
     await expect(page.locator('#dialog')).not.toBeVisible();
@@ -66,8 +65,12 @@ test('Search a YouTube video from a read text file', async ({ page }) => {
 
 // Search a video on YouTube in French
 test.describe('french language tests block', () => {
+    test.use({
+      locale: 'fr-FR',
+    });
 
-    test.only('french language youtube video - ONLY annotation', async ({ page }) => {
+    test('french language youtube video - ONLY annotation', async ({ page }) => {
+      test.slow()
       await page.goto(`https://www.youtube.com/results?search_query=whale shark`);  
       // Cookies rejection
       await page.getByRole('button', { name: 'Refuser' }).click();

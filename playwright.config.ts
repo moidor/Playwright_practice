@@ -34,10 +34,11 @@ export default defineConfig({
     actionTimeout: 0,
     // Emulates `'prefers-colors-scheme'` media feature.
     colorScheme: 'dark',
+    video: 'on',
     // Emulates the user timezone.
     // timezoneId: 'Pacific/Honolulu',
   },
-
+  
   /* Configure projects for major browsers */
   projects: [
     {
@@ -69,10 +70,10 @@ export default defineConfig({
     //   name: 'Microsoft Edge',
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
     // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    {
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    },
   ],
 
   /* Run your local dev server before starting the tests */

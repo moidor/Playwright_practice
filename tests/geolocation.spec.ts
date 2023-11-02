@@ -1,4 +1,4 @@
-import { test, expect, Locator, Browser } from '@playwright/test';
+import { test, expect, Locator, Browser, Page } from '@playwright/test';
 
 
 test.describe('geolocation', () => {
@@ -11,21 +11,30 @@ test.describe('geolocation', () => {
     offline: false
   });
 
-  test('geolocation Bing Maps', async ({ page, browser }) => {
+  test.beforeAll(async ({ }) => {
+    console.log('Before...');
+    // test.setTimeout(5000);
+  });
+  
+  test.afterAll(async () => {
+    console.log('After...');
+  });
+
+  test('geolocation Bing Maps', async ({ page, browser, isMobile }) => {
     // test.slow();
     const isBrowserConnected = await browser.isConnected();
     console.log(isBrowserConnected);
-    if (isBrowserConnected) {
+    if (isBrowserConnected && isMobile == false) {
       // await browser.startTracing(page, { path: 'trace.json' });
       const context = await browser.newContext();
       await context.tracing.start({ screenshots: true, snapshots: true });
-      await page.goto('https://www.bing.com/maps');
+      await page.goto('https://www.bing.com/maps', { timeout: 30000 });
       await page.getByRole('button', { name: 'Refuser' }).click();
       await page.getByRole('button', { name: 'Me localiser' }).click();
       await page.getByRole('button', { name: 'Fermer' }).click();
       await context.tracing.stop({ path: 'docs/traces/trace_bing_maps.zip' });
     } else {
-      console.log("A problem occurred");
+      console.log("A problem occurred in the \'if\' condition");
     }
     
   });
@@ -43,6 +52,7 @@ test.describe('geolocation', () => {
     // await page.getByLabel('Afficher votre position').click();
     await page.getByPlaceholder('Choisissez une destination…').fill('Lille');
     await page.keyboard.press('Enter');
+    // Another way ?: await page.keyboard.down('Enter');
   });
 
   /* // To override the location written above
