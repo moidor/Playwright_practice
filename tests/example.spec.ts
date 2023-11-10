@@ -7,6 +7,10 @@ import * as zip from 'zlib';
 
 test('has title', async ({ page }) => {
   test.slow();
+  await test.info().attach('screenshot', {
+    body: await page.screenshot(),
+    contentType: 'image/png',
+  });
   await page.goto('https://playwright.dev/', { waitUntil: "load" });
   await expect.poll(async () => {
     const response = await page.request.get('https://playwright.dev');
@@ -141,8 +145,33 @@ test.describe('miscellaneous', () => {
 
     await browser.close();
   });
-
 })
 
+test('multiple pages with video recording', async ({ }) => {
+  const browser = await chromium.launch();
+  const context = await browser.newContext({
+    // recordVideo: {
+    //   dir: "./docs/videos"
+    // }
+  });
+  const browserName = browser.browserType().name();
+  console.log('Server: ' + browserName);
+  // Putting the network offline...
+  // await context.setOffline(true);
 
+  // Create two pages
+  const pageOne = await context.newPage();
+  const pageTwo = await context.newPage();
+
+  // Get pages of a browser context, etc.
+  // console.log(context.pages());
+  console.log('COOKIES...: ' + context.cookies());
+  console.log('Storage: ' + await context.storageState({ path: 'D:\Sauvegarde travaux Cham\Playwright\docs'} ));
+
+  await pageOne.goto("https://google.com", { waitUntil: "load" });
+  await pageTwo.goto("https://apple.com", { waitUntil: "load" });
+  // await page.goto("https://github.com", { waitUntil: "networkidle" })
+
+  await browser.close();
+});
 
