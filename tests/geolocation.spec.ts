@@ -22,7 +22,7 @@ test.describe('geolocation', () => {
 
   test('geolocation Bing Maps', async ({ page, browser, isMobile }) => {
     // test.slow();
-    const isBrowserConnected = await browser.isConnected();
+    const isBrowserConnected = browser.isConnected();
     console.log(isBrowserConnected);
     if (isBrowserConnected && isMobile == false) {
       // await browser.startTracing(page, { path: 'trace.json' });
@@ -45,7 +45,7 @@ test.describe('geolocation', () => {
     await page.getByRole('button', { name: 'Refuser' }).click();
     // await page.waitForTimeout(10000);
     // const itinerary = await page.getByLabel('Itinéraire', { exact: true });
-    const itinerary = await page.locator('#hArJGc');
+    const itinerary = page.locator('#hArJGc');
     await itinerary.waitFor({state: 'visible', timeout: 10000});
     await itinerary.click();
     await page.getByRole('gridcell', { name: 'Votre position' }).click();

@@ -2,11 +2,7 @@ import { test, expect, Page, Locator, Browser, devices, chromium } from '@playwr
 import path from 'path';
 
 test('filechooser',async ({ page, browser }) => {
-  // test.use({
-  //   locale: '{ fr-FR }',
-  //   // Emulate the network being offline.
-  //   offline: false
-  // });
+  test.slow();
   const context = await browser.newContext();
   await context.grantPermissions(['geolocation']);
 
@@ -18,6 +14,8 @@ test('filechooser',async ({ page, browser }) => {
   
   await page.getByText('importez un fichier').click();
   const fileChooser = await fileChooserPromise;
+  // console.log(fileChooser.isMultiple());
+  // console.log(fileChooser.element()); 
   await fileChooser.setFiles(path.join('misc\\chat.jpg'));
   await page.getByRole('button', { name: 'Tout refuser' }).click();
 

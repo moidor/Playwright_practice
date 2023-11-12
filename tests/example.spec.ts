@@ -5,7 +5,7 @@ import * as stream from 'node:stream';
 import * as zip from 'zlib';
 
 
-test('has title', async ({ page }) => {
+test('has title and searching', async ({ page }) => {
   test.slow();
   await test.info().attach('screenshot', {
     body: await page.screenshot(),
@@ -32,7 +32,8 @@ test('has title', async ({ page }) => {
   await page.getByRole('button', { name: 'Search' }).press('Control+K');
   // await page.keyboard.press('Control+K');
   // Search text
-  await page.getByPlaceholder('Search docs').fill('cookies');
+  // await page.getByPlaceholder('Search docs').fill('cookies');
+  await page.getByPlaceholder('Search docs').pressSequentially('cookies', {delay: 100});
   const inputCookiesValue = await page.getByPlaceholder('Search docs').inputValue();
   expect.soft(inputCookiesValue, 'My soft assertion to get the input value').toBe('cookies');
   await page.getByRole('link', { name: 'cookies​ BrowserContext', exact: true }).waitFor({state: 'visible'});
@@ -57,7 +58,7 @@ test('has title', async ({ page }) => {
 //     await page.getByRole('button', { name: 'Search' }).press('Control+K');
 // });
 
-test('get started link', async ({ page }) => {
+test('get started link', async ({ page }) => {  
   await page.goto('https://playwright.dev/');
 
   // Click the get started link.
