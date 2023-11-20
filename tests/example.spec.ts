@@ -109,8 +109,8 @@ test.describe('miscellaneous', () => {
   test('browser argument @fast', async ({ page, browser }) => {
     await page.goto(`https://www.youtube.com/results?search_query=whale shark`);
     // Cookies rejection
-    // await page.getByRole('button', { name: 'Refuser' }).click();
-    // console.log(browser.browserType().name());
+    await page.getByRole('button', { name: 'Refuser' }).click();
+    console.log(browser.browserType().name());
   });
 
   // To skip a test
