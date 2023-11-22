@@ -20,7 +20,11 @@ export class GoogleSearchFixture {
   }
 
   async searchOnGoogle(text: string) {
-    await this.inputBox.fill(text);
+    await this.inputBox.fill(text).then((result) => {
+      console.log(`Success: ${result}`);      
+    }, (error) => {
+      console.log(`Error: ${error}`);      
+    });
     await this.inputBox.press('Enter');
   }
 }

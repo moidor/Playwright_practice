@@ -5,6 +5,6 @@ export class SettingsPage {
   }
 
   async switchToDarkMode() {
-    console.log('beforeEach log text');
+    console.log('beforeEach mock \'Switch to Dark mode\'');
   }
 }
