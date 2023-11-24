@@ -15,15 +15,16 @@ export class GoogleSearchFixture {
     // await this.page.getByRole('button', { name: 'Tout refuser' }).click();
     // await expect(cookiesRejectionButton).toBeVisible();
     await this.page.getByRole('button', { name: `${buttonName}` }).highlight();
-    await this.page.getByRole('button', { name: `${buttonName}` }).click({delay: 5000});
+    await this.page.getByRole('button', { name: `${buttonName}` }).click({delay: 1000});
     // await cookiesRejectionButton.click();
   }
 
   async searchOnGoogle(text: string) {
     await this.inputBox.fill(text).then((result) => {
-      console.log(`Success: ${result}`);      
+      expect(this.inputBox).not.toBeEmpty();
+      console.log(`Success. Searched text : '${text}'`);      
     }, (error) => {
-      console.log(`Error: ${error}`);      
+      console.log(`Error. Searched text : '${text}'`);      
     });
     await this.inputBox.press('Enter');
   }

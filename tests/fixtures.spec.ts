@@ -1,6 +1,7 @@
 import { test, expect, Locator, Browser, Page, Fixtures } from '@playwright/test';
 import * as fs from 'fs';
 import { googleFixture } from '../classes/GoogleFinalFixture';
+import { readTextFile } from '../classes/global-methods';
 
 // toDoPage fixture Playwright official documentation
 googleFixture.beforeEach(async ({ settingsPage }) => {
@@ -11,26 +12,13 @@ googleFixture.beforeEach(async ({ settingsPage }) => {
 googleFixture('Search on Google with a custom fixture', async ({ page, googleSearchFixture }) => {
   // Unconditionally marks a test as "slow". Slow test will be given triple the default timeout.
   test.slow();
-  let search_value: string = '';
-  // Reading data from the text file
-  try {
-    const data_file = fs.readFileSync('misc/data1.txt', 'utf-8');
-    const wordList = data_file.split('\r\n');
-    search_value = wordList[0];
-    expect(search_value.length).not.toBeNull();
-    console.log(`Read value from the text file: \'${search_value}\'`);
-  } catch (error) {
-    // Management of the error
-    console.log(new Error(error), new Error().name, new Error().message);
-  } finally {
-    console.log('Operation terminated');
-  }
-  
+  // // Reading data from the text file
+  let returned_text_value = await readTextFile('misc/data.txt');
   // Cookies rejection
   await googleSearchFixture.cookiesRejection('Tout refuser');
   await expect(page.locator('#dialog')).toBeHidden();
   // Searching on Google from the text file
-  await googleSearchFixture.searchOnGoogle(search_value);
+  await googleSearchFixture.searchOnGoogle(returned_text_value);
 });
 
 
@@ -112,3 +100,19 @@ googleFixture('Search on Google with a custom fixture', async ({ page, googleSea
 
 //   await page.getByLabel('Rech.').fill(`${search_value}`)
 // });
+
+
+
+// Read file 
+  // try {
+  //   const data_file = fs.readFileSync('misc/data.txt', 'utf-8');
+  //   const wordList = data_file.split('\r\n');
+  //   search_value = wordList[0];
+  //   expect(search_value.length).not.toBeNull();
+  //   console.log(`Read value from the text file: \'${search_value}\'`);
+  // } catch (error) {
+  //   // Management of the error
+  //   console.log(new Error(error), new Error().name, new Error().message);
+  // } finally {
+  //   console.log('Operation terminated');
+  // }
