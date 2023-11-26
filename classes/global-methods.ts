@@ -1,4 +1,4 @@
-import { test, expect, Locator, Browser, Page, Fixtures } from '@playwright/test';
+import { expect } from '@playwright/test';
 import * as fs from 'fs';
 
 // Reading data from the text file
@@ -29,11 +29,7 @@ export const readTextFile = async function readTextFile(file_path: string): Prom
   }
 };
 
-
-
-
-
-
+// Create the same above function with Switch condition to deal with json and txt files, etc.
 
 /* export const readTextFile = function readTextFile(file_path: string): string {
   let default_value = 'default';
